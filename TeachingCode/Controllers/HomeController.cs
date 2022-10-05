@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using TeachingCode.Models;
 
@@ -13,10 +14,15 @@ namespace TeachingCode.Controllers
             _logger = logger;
         }
 
+        // Help with locking down web applications
+        // [AllowAnonymous]
         public IActionResult Index()
         {
             return View();
         }
+
+        // Makes it so only students
+        // [Authorize(Roles = IdentityHelper.Student)]
 
         public IActionResult Privacy()
         {
