@@ -20,5 +20,27 @@ namespace TeachingCode.Models
                 }
             }
         }
+
+        public static async Task CreateDefaultUser(IServiceProvider provider, string role)
+        {
+            var userManager = provider.GetService<UserManager<IdentityUser>>();
+
+            // If no users are present, make the default user
+            int numUsers = (await userManager.GetUsersInRoleAsync(role)).Count;
+ 
+            if(numUsers == 0) // If no users are in the specified role
+            {
+                var defaultUser = new IdentityUser()
+                {
+                    Email = "instructor@teachcoding.com",
+                    UserName = "Admin"
+                };
+
+                // Hard code for now will change later to be more secure
+                await userManager.CreateAsync(defaultUser, "Programming01#");
+
+                await userManager.AddToRoleAsync(defaultUser, role);
+            }
+        }
     }
 }
